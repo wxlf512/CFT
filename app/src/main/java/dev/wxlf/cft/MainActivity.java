@@ -1,6 +1,7 @@
 package dev.wxlf.cft;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.widget.TextView;
@@ -12,6 +13,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -24,7 +26,7 @@ import okhttp3.Response;
 public class MainActivity extends AppCompatActivity {
 
     private TextView mTxt;
-
+    ArrayList<Currency> currencies = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,15 +46,21 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+                assert response.body() != null;
                 final String responseStr = response.body().string();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mTxt.setText(responseStr);
-                    }
-                });
+                runOnUiThread(() -> mTxt.setText(responseStr));
 
             }
         });
+        setTestData();
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        CurrencyAdapter adapter = new CurrencyAdapter(this, currencies);
+        recyclerView.setAdapter(adapter);
+    }
+
+    private void setTestData() {
+        currencies.add(new Currency("USD", "Американский доллар", 99.9999));
+        currencies.add(new Currency("EUR", "Евро", 109.9999));
+        currencies.add(new Currency("BYN", "Беларусский рубль", 33.0903));
     }
 }
