@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">CFT</string>
+    <string name="update">Обновить</string>
+    <string name="rub">RUB</string>
+    <string name="rval">RUB/VAL</string>
+    <string name="val">VAL</string>
 </resources>
